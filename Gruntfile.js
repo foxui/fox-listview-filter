@@ -16,15 +16,14 @@ module.exports = function(grunt) {
 
     // Metadata.
     meta: {
-      distPath:       'dist/',
-      srcPath: 'src/'
+      distPath:       'dist/'
     },
 
     banner: '/*!\n' +
             ' * =====================================================\n' +
             ' * Foxui v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
             ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-            ' * Licensed under <%= pkg.license %> (https://github.com/foxui/fox-core/blob/master/LICENSE)\n' +
+            ' * Licensed under <%= pkg.license %> (https://github.com/foxui/fox-icon/blob/master/LICENSE)\n' +
             ' *\n' +
             ' * v<%= pkg.version %> designed by @fex-team.\n' +
             ' * =====================================================\n' +
@@ -40,16 +39,7 @@ module.exports = function(grunt) {
           banner: '<%= banner %>'
         },
         src: [
-          'lib/zepto.js',
-          'lib/rivets.js',
-          'lib/x-tag-core.js',
-          'src/root.js',
-          'src/utils.js',
-          'src/log.js',
-          'src/extend.js',
-          'src/register.js',
-          'lib/HTMLImports.js',
-          'src/nav.js'
+          'src/*.js',
         ],
         dest: '<%= meta.distPath %><%= pkg.name %>.js'
       }
@@ -63,7 +53,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          '<%= meta.distPath %><%= pkg.name %>.css': 'sass/foxui.scss'
+          '<%= meta.distPath %><%= pkg.name %>.css': 'sass/fox-icon.scss'
         }
       }
     },
@@ -80,9 +70,16 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      fonts: {
+      css: {
         expand: true,
-        src: 'fonts/*',
+        cwd: 'css/',
+        src: '*.css',
+        dest: '<%= meta.distPath %>'
+      },
+      tags: {
+        expand: true,
+        cwd: 'src/',
+        src: '*.html',
         dest: '<%= meta.distPath %>'
       }
     },
@@ -112,54 +109,14 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      sass: {
-        files: [
-          '<%= meta.srcPath %>**/*.scss'
-        ],
-        tasks: ['sass']
-      },
-
       scripts: {
         files: [
-          '<%= meta.srcPath %>**/*.js'
+          'css/*.css',
+          'sass/*.scss',
+          'src/*.html'
         ],
-        tasks: ['dist-js']
+        tasks: ['dist']
       }
-    },
-
-    jshint: {
-      options: {
-        jshintrc: 'js/.jshintrc'
-      },
-      grunt: {
-        src: ['Gruntfile.js', 'grunt/*.js']
-      },
-      src: {
-        src: 'js/*.js'
-      }
-    },
-
-    jscs: {
-      options: {
-        config: 'js/.jscsrc'
-      },
-      grunt: {
-        src: '<%= jshint.grunt.src %>'
-      },
-      src: {
-        src: '<%= jshint.src.src %>'
-      }
-    },
-
-    csslint: {
-      options: {
-        csslintrc: 'sass/.csslintrc'
-      },
-      src: [
-        '<%= meta.distPath %>/css/<%= pkg.name %>.css',
-        '<%= meta.distPath %>/css/<%= pkg.name %>-theme-android.css',
-        '<%= meta.distPath %>/css/<%= pkg.name %>-theme-ios.css'
-      ]
     },
 
     qunit: {
@@ -174,9 +131,9 @@ module.exports = function(grunt) {
   // Default task(s).
   grunt.registerTask('dist-css', ['sass', 'csscomb', 'cssmin']);
   grunt.registerTask('dist-js', ['concat', 'uglify']);
-  grunt.registerTask('dist', ['clean', 'dist-css', 'dist-js', 'copy']);
+  grunt.registerTask('dist', ['clean','copy', 'dist-css' ]);
   grunt.registerTask('build', ['dist']);
   grunt.registerTask('default', ['dist']);
-  grunt.registerTask('test', ['dist', /*'csslint', 'jshint', 'jscs',*/ 'qunit']);
+  grunt.registerTask('test', ['dist', 'qunit']);
 
 };

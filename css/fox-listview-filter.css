@@ -1,19 +1,40 @@
 fox-listview-filter {
 	position: relative;
 	background: #fff;
-	
+	visibility: hidden;
 }
 fox-listview-filter.active{
-	
+	visibility: visible;
 }
 
-.fox-filter-content {
+.androidFix {
+    overflow:hidden !important;
+    overflow-y:hidden !important;
+    overflow-x:hidden !important;
+}
+
+.fox-filter-left {
 	overflow: hidden;
 	position: absolute;
 	left: 0;
 	right: 30px;
 	top: 0;
 	bottom: 0;
+	
+}
+.fox-filter-content{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	
+}
+
+.fox-filter-content::-webkit-scrollbar { 
+    display: none; 
 }
 .fox-filter-fixed{
 	position: absolute;
@@ -33,6 +54,11 @@ fox-filter-title {
 	padding: 0 20px;
 	background: rgb(233,233,233);
 	font-weight: bold;
+	position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  top: 0;
 }
 fox-filter-content {
 	font-size: 16px;
