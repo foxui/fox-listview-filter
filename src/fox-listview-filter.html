@@ -1,0 +1,157 @@
+<fox-element name="fox-listview-filter">
+
+    <fox-template>
+        
+            <div id="fox-filter-content" class="fox-filter-content">
+                <div id="filter-scroller" class="fox-filter-scroller">
+                    <content></content>
+                </div>
+                <div id="fox-filter-fixed" class="fox-filter-fixed"></div>
+            </div>
+            
+       
+
+        <div id="filter-index" class="fox-filter-index">
+            <div class="fox-filter-index-inner" id="fox-index-container">
+                <div class="fox-filter-num" rv-each-index="indexArr">
+                    {index}
+                </div>
+            </div>
+        </div>
+
+    </fox-template>
+    <script src="../lib/iscroll-probe.js"></script>
+    <script>
+		function FoxFilter(el) {
+			var store = [];
+			var iscroll;
+			$("fox-filter-item", el).each(function(i) {
+				var $this = $(this);
+				var $title = $("fox-filter-title", this);
+				store[i] = {
+					contentTop : $this.offset().top + $this.height(),
+					titleTop : $title.offset().top,
+					$title : $title
+				};
+			});
+			var lastItem = {
+				y : 0,
+				i : -1
+			};
+			var $fixed;
+			this.setupScroll = function() {
+				
+
+				iscroll = new IScroll(el.$['fox-filter-content'], {
+					probeType : 3,
+					mouseWheel : true,
+					scrollbars : false
+				});
+				$fixed = $(el.$['fox-filter-fixed']);
+
+				iscroll.on("scroll", function() {
+					var y = this.y;
+					var i = lastItem.i;
+
+					if (y - lastItem.y == 0) {
+
+					} else {
+						if (y >= 0) {
+							$fixed.hide();
+						} else {
+							$fixed.show();
+						}
+
+						if (y - lastItem.y <= 0) {
+							i = Math.min(i + 1, store.length - 1);
+						} else {
+							i = Math.max(0, i - 1);
+						}
+
+						var obj = store[i];
+						if (obj.contentTop + lastItem.y >= 0 && obj.titleTop + lastItem.y <= 0) {
+							$fixed.html(obj.$title.clone(true));
+							lastItem.i = i;
+						}
+						lastItem.y = y;
+					}
+
+				});
+
+			}
+
+			this.setupIndex = function() {
+				var indexStore = [];
+				$(".fox-filter-num", el.$['fox-index-container']).each(function() {
+					indexStore.push({
+						top : $(this).offset().top,
+						height : $(this).height(),
+						index : $(this).index()
+					});
+				});
+				var last = {
+					y : 0,
+					i : -1
+				}
+				$(el.$['fox-index-container']).bind("touchstart", function(e) {
+					var y = e.touches[0].pageY;
+					indexStore.forEach(function(s, i) {
+						if (y >= s.top && y <= s.top + s.height) {
+							iscroll.scrollTo(0, -store[s.index].titleTop, 1);
+							last.i = i;
+							$fixed.hide().html(store[s.index].$title.clone(true));
+							lastItem.y = -store[s.index].titleTop;
+							lastItem.i = i;
+							return false;
+						}
+					});
+					last.y = y;
+					return false;
+				});
+				$(el.$['fox-index-container']).bind("touchmove", function(e) {
+					var y = e.touches[0].pageY;
+					var i = last.i;
+					if (y - last.y >= 0) {
+						i = Math.min(i + 1, indexStore.length - 1);
+					} else {
+						i = Math.max(0, i - 1);
+					}
+
+					var s = indexStore[i];
+					if (y >= s.top && y <= s.top + s.height) {
+						iscroll.scrollTo(0, -store[s.index].titleTop, 1);
+						last.i = i;
+						$fixed.hide().html(store[s.index].$title.clone(true));
+						lastItem.y = -store[s.index].titleTop;
+						lastItem.i = i;
+						return false;
+					}
+
+					last.y = y;
+
+					return false;
+				});
+
+			}
+		}
+
+		fox("fox-listview-filter", {
+			lifecycle : {
+				created : function() {
+					var indexArr = [];
+
+					$("fox-filter-item", this).each(function() {
+						indexArr.push($(this).attr("name"));
+					});
+					this.indexArr = indexArr;
+
+					this.FoxFilter = new FoxFilter(this);
+					this.FoxFilter.setupScroll();
+					this.FoxFilter.setupIndex();
+					$(this).addClass("active");
+				}
+			}
+		});
+    </script>
+
+</fox-element>

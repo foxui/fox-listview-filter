@@ -1,0 +1,74 @@
+fox-listview-filter {
+	position: relative;
+	background: #fff;
+	
+}
+fox-listview-filter.active{
+	
+}
+
+.fox-filter-content {
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	right: 30px;
+	top: 0;
+	bottom: 0;
+}
+.fox-filter-fixed{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+fox-filter-item {
+	display: block;
+}
+
+fox-filter-title {
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+	padding: 0 20px;
+	background: rgb(233,233,233);
+	font-weight: bold;
+}
+fox-filter-content {
+	font-size: 16px;
+	display: block;
+	margin-left: 20px;
+}
+.fox-filter-num {
+	height: 14px;
+	line-height: 14px;
+}
+.fox-filter-index-inner{
+	padding: 10px;
+}
+.fox-filter-index {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-moz-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-moz-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	position: absolute;
+	right: 0;
+	top: 0;
+	font-size: 10px;
+	bottom: 0;
+	width: 30px;
+	text-align: center;
+	color: #EF4E3A;
+	z-index: 999;
+}

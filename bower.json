@@ -1,0 +1,7 @@
+{
+  "name": "fox-listview-filter",
+  "private": true,
+  "dependencies": {
+    "fox-core": "https://github.com/foxui/fox-core.git"
+  }
+}

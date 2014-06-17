@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>fox-listview-filter</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="../../fox-core/dist/foxui.css"/>
+		<script src="../../fox-core/dist/foxui.js"></script>
+		<link rel="stylesheet" href="../css/fox-listview-filter.css">
+		<link rel="import" href="../src/fox-listview-filter.html">
+		<style>
+		    fox-listview-filter{
+		        position: absolute;
+		        left: 0;
+		        right: 0;
+		        top: 0;
+		        bottom: 0;
+		    }
+		    .item{
+		       padding: 5px 0;   
+		       border-bottom: 1px solid #B2B2B2;
+		    }
+		    fox-filter-content .item:last-child{
+		        border-bottom: none;
+		    }
+		</style>
+	</head>
+	<body>
+		<fox-listview-filter id="filter">
+			<fox-filter-item rv-name="item.name" rv-each-item="param">
+			     <fox-filter-title>{item.name}</fox-filter-title>
+			     <fox-filter-content>
+			         <div class="item" rv-each-sub="item.list">{sub}</div>
+			     </fox-filter-content>
+			</fox-filter-item>
+		</fox-listview-filter>
+		<script>
+		    
+		    function getData(){
+		        var datas = [];
+		        for(var i = 0;i<26;i++){
+		            var obj = {};
+		            datas.push(obj);
+		            obj.name = String.fromCharCode(65+i);
+		            obj.list = [];
+		            for(var j = 0;j<20;j++){
+		                obj.list.push(obj.name+""+i);
+		            }
+		        }
+		        console.info(datas);
+		        return datas;
+		    }
+		    
+		    document.getElementById("filter").param = getData();
+		</script>
+
+	</body>
+</html>
