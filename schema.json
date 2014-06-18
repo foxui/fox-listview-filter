@@ -1,0 +1,35 @@
+{
+    "title": "fox-listview-filter",
+    "description": "schema of fox-listview-filter data source ",
+    "type": "array",
+    "items":{
+    	"type":"object",
+    	"properties":{
+    		"name":{
+    			"type":"string",
+    			"description": "filter row title"
+    		},
+    		"list":{
+    			"type":"array",
+    			"description": "url of the image",
+    			"items":{
+    				"type":"object",
+    				"properties":{
+    					"label":{
+    						"type":"string",
+    						"description": "display of item"
+    					},
+    					"value":{
+    						"type":"string",
+    						"description": "value of item"
+    					}
+    				},
+    				"required": ["label","value"]
+    			}
+    		}
+    		
+    	}
+    	
+    }
+    
+}

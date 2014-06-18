@@ -3,26 +3,25 @@ fox-listview-filter {
 	background: #fff;
 	visibility: hidden;
 }
-fox-listview-filter.active{
+fox-listview-filter.active {
 	visibility: visible;
 }
 
-.androidFix {
-    overflow:hidden !important;
-    overflow-y:hidden !important;
-    overflow-x:hidden !important;
+fox-listview-filter .androidFix {
+	overflow: hidden !important;
+	overflow-y: hidden !important;
+	overflow-x: hidden !important;
 }
 
-.fox-filter-left {
+fox-listview-filter .fox-filter-left {
 	overflow: hidden;
 	position: absolute;
 	left: 0;
 	right: 30px;
 	top: 0;
 	bottom: 0;
-	
 }
-.fox-filter-content{
+fox-listview-filter .fox-filter-content {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -30,23 +29,22 @@ fox-listview-filter.active{
 	bottom: 0;
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
-	
 }
 
-.fox-filter-content::-webkit-scrollbar { 
-    display: none; 
+fox-listview-filter .fox-filter-content::-webkit-scrollbar {
+	display: none;
 }
-.fox-filter-fixed{
+fox-listview-filter .fox-filter-fixed {
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
 }
-fox-filter-item {
+fox-listview-filter fox-filter-item {
 	display: block;
 }
 
-fox-filter-title {
+fox-listview-filter fox-filter-title {
 	display: block;
 	height: 30px;
 	line-height: 30px;
@@ -55,24 +53,24 @@ fox-filter-title {
 	background: rgb(233,233,233);
 	font-weight: bold;
 	position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
-  top: 0;
+	position: -moz-sticky;
+	position: -ms-sticky;
+	position: -o-sticky;
+	top: 0;
 }
-fox-filter-content {
+fox-listview-filter fox-filter-content {
 	font-size: 16px;
 	display: block;
 	margin-left: 20px;
 }
-.fox-filter-num {
+fox-listview-filter .fox-filter-num {
 	height: 14px;
 	line-height: 14px;
 }
-.fox-filter-index-inner{
+fox-listview-filter .fox-filter-index-inner {
 	padding: 10px;
 }
-.fox-filter-index {
+fox-listview-filter .fox-filter-index {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -moz-box;
@@ -98,3 +96,11 @@ fox-filter-content {
 	color: #EF4E3A;
 	z-index: 999;
 }
+fox-listview-filter .fox-default-item {
+	padding: 6px 0;
+	border-bottom: 1px solid #B2B2B2;
+}
+fox-filter-content .fox-default-item:last-child {
+	border-bottom: none;
+}
+

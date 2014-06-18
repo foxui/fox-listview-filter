@@ -17,12 +17,29 @@
 		        top: 0;
 		        bottom: 0;
 		    }
-
+		    .item{
+		       padding: 6px 0;   
+		       border-bottom: 1px solid #B2B2B2;
+		    }
+		    fox-filter-content .item:last-child{
+		        border-bottom: none;
+		    }
 		</style>
 	</head>
 	<body>
 		<fox-listview-filter id="filter">
-			
+		    <fox-tmpl>
+    			<fox-filter-item rv-name="item.name" rv-each-item="custom">
+                    <fox-filter-title>
+                        {item.name}
+                    </fox-filter-title>
+                    <fox-filter-content>
+                        <div class="item" rv-each-sub="item.list">
+                            {sub}
+                        </div>
+                    </fox-filter-content>
+                </fox-filter-item>
+            </fox-tmpl>
 		</fox-listview-filter>
 		<script>
 		    window.addEventListener("HTMLImportsLoaded",function(e){
@@ -34,20 +51,14 @@
                         obj.name = String.fromCharCode(65+i);
                         obj.list = [];
                         for(var j = 0;j<20;j++){
-                            obj.list.push({
-                                "label":obj.name+""+j,
-                                "value":"value"+obj.name+""+j,
-                            });
+                            obj.list.push(obj.name+""+i);
                         }
                     }
                     return datas;
                 }
-                var filter = document.getElementById("filter");
-                filter.addEventListener("select",function(e){
-                    alert(e.detail.value+","+e.detail.el);
-                },false);
-                filter.data = getData();
-                filter.setup();
+                
+                document.getElementById("filter").custom = getData();
+                document.getElementById("filter").setup();
 		    },false);
 		    
 		</script>
