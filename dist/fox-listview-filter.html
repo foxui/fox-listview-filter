@@ -1,9 +1,23 @@
+ <link rel="stylesheet" href="css/fox-listview-filter.css">
 <fox-element name="fox-listview-filter">
+
 
     <fox-template>
         <div class="fox-filter-left">
             <div id="fox-filter-content" class="fox-filter-content">
                 <div id="filter-scroller" class="fox-filter-scroller">
+                    <div id="filter-tmpl-default">
+                        <fox-filter-item rv-name="item.name" rv-each-item="data">
+                            <fox-filter-title>
+                                {item.name}
+                            </fox-filter-title>
+                            <fox-filter-content>
+                                <div class="fox-default-item" rv-data-value="sub.value" rv-each-sub="item.list">
+                                    {sub.label}
+                                </div>
+                            </fox-filter-content>
+                        </fox-filter-item>
+                    </div>
                     <content></content>
                 </div>
 
@@ -20,10 +34,14 @@
         </div>
 
     </fox-template>
-    
+
     <script>
 		function FoxFilter(el) {
 			var store = [];
+
+            $(el).delegate(".fox-default-item","click",function(){
+                el.fireSelect(this,$(this).data("value"));
+            });
 
 			$("fox-filter-item", el).each(function(i) {
 				var $this = $(this);
@@ -41,7 +59,7 @@
 			var $fixed;
 			var $content = $(el.$['fox-filter-content']);
 			this.setupScroll = function() {
-                
+
 				$fixed = $(el.$['fox-filter-fixed']);
 
 				$content.bind("scroll", function(e) {
@@ -78,13 +96,13 @@
 			}
 
 			this.setupIndex = function() {
-			    
+
 				var indexStore = [];
-				
-				$(el.$['filter-index']).bind("touchmove",function(){
-				   return false; 
+
+				$(el.$['filter-index']).bind("touchmove", function() {
+					return false;
 				});
-				
+
 				$(".fox-filter-num", el.$['fox-index-container']).each(function() {
 					indexStore.push({
 						top : $(this).offset().top,
@@ -96,16 +114,16 @@
 					y : 0,
 					i : -1
 				}
-				var isltAndroid18 = ((s = /android\s+(\d.\d)/.exec(navigator.userAgent.toLowerCase()))&&parseFloat(s[1])<4.4);
-				
+				var isltAndroid18 = (( s = /android\s+(\d.\d)/.exec(navigator.userAgent.toLowerCase())) && parseFloat(s[1]) < 4.4);
+
 				$(el.$['fox-index-container']).bind("touchstart", function(e) {
-				    
-				    if(isltAndroid18){
-				        $content.addClass("androidFix");
-				    }
-				    
+
+					if (isltAndroid18) {
+						$content.addClass("androidFix");
+					}
+
 					var y = e.touches[0].pageY;
-					
+
 					indexStore.forEach(function(s, i) {
 						if (y >= s.top && y <= s.top + s.height) {
 							$content.scrollTop(store[s.index].titleTop);
@@ -119,56 +137,76 @@
 					last.y = y;
 					return false;
 				}).bind("touchmove", function(e) {
-                    var y = e.touches[0].pageY;
-                    var i = last.i;
-                    if (y - last.y >= 0) {
-                        i = Math.min(i + 1, indexStore.length - 1);
-                    } else {
-                        i = Math.max(0, i - 1);
-                    }
+					var y = e.touches[0].pageY;
+					var i = last.i;
+					if (y - last.y >= 0) {
+						i = Math.min(i + 1, indexStore.length - 1);
+					} else {
+						i = Math.max(0, i - 1);
+					}
 
-                    var s = indexStore[i];
-                    if (y >= s.top && y <= s.top + s.height) {
-                        $content.scrollTop(store[s.index].titleTop);
-                        last.i = i;
-                        $fixed.hide().html(store[s.index].$title.clone(true));
-                        lastItem.y = -store[s.index].titleTop;
-                        lastItem.i = i;
-                    }
-                    
-                    last.y = y;
+					var s = indexStore[i];
+					if (y >= s.top && y <= s.top + s.height) {
+						$content.scrollTop(store[s.index].titleTop);
+						last.i = i;
+						$fixed.hide().html(store[s.index].$title.clone(true));
+						lastItem.y = -store[s.index].titleTop;
+						lastItem.i = i;
+					}
 
-                    return false;
-                }).bind("touchend",function(e){
-                    if(isltAndroid18){
-                        $content.removeClass("androidFix");
-                    }
-                });
+					last.y = y;
+
+					return false;
+				}).bind("touchend", function(e) {
+					if (isltAndroid18) {
+						$content.removeClass("androidFix");
+					}
+				});
 
 			}
 		}
 
 		fox("fox-listview-filter", {
 			lifecycle : {
-				created : function() {
-				    
-				    
+				created : function() { 
+					var $foxTmpl =  $("fox-tmpl",this);
+					if($foxTmpl.size()>0){
+					    this.$['filter-tmpl-default'].remove();
+					}
+					var $foxJson = $("fox-json",this);
+					if($foxJson.size()>0){
+					    this.data = JSON.parse($foxJson.attr("data"));
+					    this.setup();
+					}
+
+				}
+			},
+			methods : {
+				"setup" : function() {
 					var indexArr = [];
 
 					$("fox-filter-item", this).each(function() {
 						indexArr.push($(this).attr("name"));
 					});
 					this.indexArr = indexArr;
-                    
+
 					this.FoxFilter = new FoxFilter(this);
-					
-					if(!((s = /iphone\s+os\s(\d+)_(\d+)/.exec(navigator.userAgent.toLowerCase()))&&parseInt(s[1])>=6)){
-					    
-					   this.FoxFilter.setupScroll();    
+
+					if (!(( s = /iphone\s+os\s(\d+)_(\d+)/.exec(navigator.userAgent.toLowerCase())) && parseInt(s[1]) >= 6)) {
+
+						this.FoxFilter.setupScroll();
 					}
-					
+
 					this.FoxFilter.setupIndex();
 					$(this).addClass("active");
+				},
+				"fireSelect":function(el,value){
+				    xtag.fireEvent(this, 'select', {
+                        'detail' : {
+                            value : value,
+                            el : el
+                        }
+                    });
 				}
 			}
 		});
