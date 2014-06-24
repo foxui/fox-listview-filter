@@ -2,22 +2,10 @@
 <fox-element name="fox-listview-filter">
 
 
-    <fox-template>
+    <tpl>
         <div class="fox-filter-left">
             <div id="fox-filter-content" class="fox-filter-content">
                 <div id="filter-scroller" class="fox-filter-scroller">
-                    <div id="filter-tmpl-default">
-                        <fox-filter-item rv-name="item.name" rv-each-item="data">
-                            <fox-filter-title>
-                                {item.name}
-                            </fox-filter-title>
-                            <fox-filter-content>
-                                <div class="fox-default-item" rv-data-value="sub.value" rv-each-sub="item.list">
-                                    {sub.label}
-                                </div>
-                            </fox-filter-content>
-                        </fox-filter-item>
-                    </div>
                     <content></content>
                 </div>
 
@@ -33,7 +21,7 @@
             </div>
         </div>
 
-    </fox-template>
+    </tpl>
 
     <script>
 		function FoxFilter(el) {
@@ -169,15 +157,7 @@
 		fox("fox-listview-filter", {
 			lifecycle : {
 				created : function() { 
-					var $foxTmpl =  $("fox-tmpl",this);
-					if($foxTmpl.size()>0){
-					    this.$['filter-tmpl-default'].remove();
-					}
-					var $foxJson = $("fox-json",this);
-					if($foxJson.size()>0){
-					    this.data = JSON.parse($foxJson.attr("data"));
-					    this.setup();
-					}
+					
 
 				}
 			},

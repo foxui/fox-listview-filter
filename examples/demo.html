@@ -3,53 +3,64 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title>fox-listview-filter</title>
-	
+
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="../../fox-core/dist/foxui.css"/>
 		<script src="../../fox-core/dist/foxui.js"></script>
-		
-		<link rel="import" href="../dist/fox-listview-filter.html">
+
+		<link rel="import" href="../src/fox-listview-filter.html">
 		<style>
-		    #filter{
-		        position: absolute;
-		        left: 0;
-		        right: 0;
-		        top: 0;
-		        bottom: 0;
-		    }
+			#filter {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+			}
 
 		</style>
 	</head>
 	<body>
 		<fox-listview-filter id="filter">
-			
+			<fox-filter-item rv-name="item.name" rv-each-item="data">
+				<fox-filter-title>
+					{item.name}
+				</fox-filter-title>
+				<fox-filter-content>
+					<div class="fox-default-item" rv-data-value="sub.value" rv-each-sub="item.list">
+						{sub.label}
+					</div>
+				</fox-filter-content>
+			</fox-filter-item>
 		</fox-listview-filter>
 		<script>
-		    window.addEventListener("HTMLImportsLoaded",function(e){
-		        function getData(){
-                    var datas = [];
-                    for(var i = 0;i<26;i++){
-                        var obj = {};
-                        datas.push(obj);
-                        obj.name = String.fromCharCode(65+i);
-                        obj.list = [];
-                        for(var j = 0;j<20;j++){
-                            obj.list.push({
-                                "label":obj.name+""+j,
-                                "value":"value"+obj.name+""+j,
-                            });
-                        }
-                    }
-                    return datas;
-                }
-                var filter = document.getElementById("filter");
-                filter.addEventListener("select",function(e){
-                    alert(e.detail.value+","+e.detail.el);
-                },false);
-                filter.data = getData();
-                filter.setup();
-		    },false);
-		    
+			window.addEventListener("HTMLImportsLoaded", function(e) {
+				function getData() {
+					var datas = [];
+					for (var i = 0; i < 26; i++) {
+						var obj = {};
+						datas.push(obj);
+						obj.name = String.fromCharCode(65 + i);
+						obj.list = [];
+						for (var j = 0; j < 20; j++) {
+							obj.list.push({
+								"label" : obj.name + "" + j,
+								"value" : "value" + obj.name + "" + j,
+							});
+						}
+					}
+					return datas;
+				}
+
+				var filter = document.getElementById("filter");
+				rivets.bind(filter, filter);
+				filter.addEventListener("select", function(e) {
+					alert(e.detail.value + "," + e.detail.el);
+				}, false);
+				filter.data = getData();
+				filter.setup();
+			}, false);
+
 		</script>
 
 	</body>
